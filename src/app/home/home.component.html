@@ -10,3 +10,24 @@
     }
   </mat-form-field>
 </div>
+@defer {
+  <cdk-virtual-scroll-viewport
+    scrollWindow
+    itemSize="50"
+    (scrolledIndexChange)="getNextBatch()"
+  >
+    <div
+      *cdkVirtualFor="let item of infinite | async; trackBy: trackBy"
+      class="example-item"
+    >
+      {{ item.name }}
+      {{ item.query }}
+    </div>
+    @if (!theEnd) {
+      <div>Loading...</div>
+    }
+  </cdk-virtual-scroll-viewport>
+}
+@if (theEnd) {
+  <div>No more data to load...</div>
+}
