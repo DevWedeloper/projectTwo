@@ -1,13 +1,13 @@
 import { ChangeDetectionStrategy, Component } from '@angular/core';
 
 @Component({
-  selector: 'app-infinite-scroll',
+  selector: 'app-home',
   standalone: true,
   imports: [],
-  templateUrl: './infinite-scroll.component.html',
-  styleUrl: './infinite-scroll.component.scss',
+  templateUrl: './home.component.html',
+  styleUrl: './home.component.scss',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class InfiniteScrollComponent {
+export class HomeComponent {
 
 }

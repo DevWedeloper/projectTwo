@@ -4,8 +4,8 @@ export const routes: Routes = [
   {
     path: 'home',
     loadComponent: () =>
-      import('./infinite-scroll/infinite-scroll.component').then(
-        (m) => m.InfiniteScrollComponent,
+      import('./home/home.component').then(
+        (m) => m.HomeComponent,
       ),
   },
   {
