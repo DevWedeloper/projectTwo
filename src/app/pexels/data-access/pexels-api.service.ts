@@ -14,8 +14,8 @@ export class PexelsApiService {
   searchPhotos(
     query: string,
     perPage: number,
-  ): Observable<HttpResponse<PexelsSearchPhotosData[]>> {
-    return this.http.get<PexelsSearchPhotosData[]>(
+  ): Observable<HttpResponse<PexelsSearchPhotosData>> {
+    return this.http.get<PexelsSearchPhotosData>(
       `${this.url}?query=${query}&per_page${perPage}`,
       { observe: 'response' },
     );
