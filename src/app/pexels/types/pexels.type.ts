@@ -1,4 +1,4 @@
-type Photo = {
+export type PexelsPhoto = {
   id: number;
   width: number;
   height: number;
@@ -25,6 +25,6 @@ export type PexelsSearchPhotosData = {
   total_results: number;
   page: number;
   per_page: number;
-  photos: Photo[];
+  photos: PexelsPhoto[];
   next_page: string;
 };
