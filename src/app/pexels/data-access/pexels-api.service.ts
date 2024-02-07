@@ -1,4 +1,4 @@
-import { HttpClient, HttpResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../environments/environment';
@@ -14,10 +14,9 @@ export class PexelsApiService {
   searchPhotos(
     query: string,
     perPage: number,
-  ): Observable<HttpResponse<PexelsSearchPhotosData>> {
+  ): Observable<PexelsSearchPhotosData> {
     return this.http.get<PexelsSearchPhotosData>(
       `${this.url}?query=${query}&per_page${perPage}`,
-      { observe: 'response' },
     );
   }
 }
