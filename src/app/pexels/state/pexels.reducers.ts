@@ -51,7 +51,7 @@ const pexelsFeature = createFeature({
     on(pexelsActions.changeSearchQuery, (state, action) => ({
       ...state,
       searchQuery: action.query,
-      page: 1,
+      nextPage: 1,
     })),
   ),
   extraSelectors: ({ selectLoadSearchPhotosState }) => ({
