@@ -16,11 +16,12 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { Store } from '@ngrx/store';
-import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
+import { Subject, debounceTime, distinctUntilChanged, take } from 'rxjs';
 import { pexelsActions } from '../pexels/state/pexels.actions';
 import {
   selectIsLoadingSearchPhotos,
   selectPhotos,
+  selectTheEnd,
 } from '../pexels/state/pexels.reducers';
 
 @Component({
@@ -43,9 +44,9 @@ export class HomeComponent {
   private store = inject(Store);
   protected photos$ = this.store.select(selectPhotos);
   protected loading$ = this.store.select(selectIsLoadingSearchPhotos);
+  protected theEnd$ = this.store.select(selectTheEnd);
   protected value = 'dog';
   private batchSize = 15;
-  protected theEnd = false;
   protected searchQuery$ = new Subject<string>();
   @ViewChild(CdkVirtualScrollViewport) viewport!: CdkVirtualScrollViewport;
 
@@ -53,28 +54,30 @@ export class HomeComponent {
     this.searchQuery$
       .pipe(debounceTime(300), distinctUntilChanged(), takeUntilDestroyed())
       .subscribe((query) => {
-        this.store.dispatch(
-          pexelsActions.changeSearchQuery({
-            query,
-          }),
-        );
+        if (query.trim() !== '') {
+          this.store.dispatch(
+            pexelsActions.changeSearchQuery({
+              query,
+            }),
+          );
+        }
       });
   }
 
   getNextBatch() {
-    // if (this.theEnd) {
-    //   return;
-    // }
-
-    const distanceToBottom = this.viewport.measureScrollOffset('bottom');
-    if (distanceToBottom <= 10) {
-      this.store.dispatch(
-        pexelsActions.loadSearchPhotos({
-          query: this.value,
-          perPage: this.batchSize,
-        }),
-      );
-    }
+    this.theEnd$.pipe(take(1)).subscribe((theEnd) => {
+      if (!theEnd) {
+        const distanceToBottom = this.viewport.measureScrollOffset('bottom');
+        if (distanceToBottom <= 10) {
+          this.store.dispatch(
+            pexelsActions.loadSearchPhotos({
+              query: this.value,
+              perPage: this.batchSize,
+            }),
+          );
+        }
+      }
+    });
   }
 
   trackBy(index: number) {

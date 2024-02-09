@@ -4,19 +4,23 @@ import { PexelsPhoto } from '../types/pexels.type';
 import { pexelsActions } from './pexels.actions';
 
 type PexelsState = {
-  photos: PexelsPhoto[] | null;
+  photos: PexelsPhoto[];
   loadSearchPhotosState: 'pending' | 'loading' | 'error' | 'success';
   hasLoadSearchPhotosError: HttpErrorResponse | null;
   searchQuery: string;
   perPage: number;
+  nextPage: number;
+  theEnd: boolean;
 };
 
 const initialState: PexelsState = {
-  photos: null,
+  photos: [],
   loadSearchPhotosState: 'pending',
   hasLoadSearchPhotosError: null,
   searchQuery: '',
   perPage: 15,
+  nextPage: 1,
+  theEnd: false,
 };
 
 const pexelsFeature = createFeature({
@@ -28,22 +32,26 @@ const pexelsFeature = createFeature({
       loadSearchPhotosState: 'loading' as const,
       searchQuery: action.query,
       perPage: action.perPage,
+      theEnd: false,
     })),
     on(pexelsActions.loadSearchPhotosSuccess, (state, action) => ({
       ...state,
       photos: action.photos,
       loadSearchPhotosState: 'success' as const,
       hasLoadSearchPhotosError: null,
+      nextPage: state.nextPage + 1,
+      theEnd: action.theEnd,
     })),
     on(pexelsActions.loadSearchPhotosFailure, (state, action) => ({
       ...state,
-      photos: null,
+      photos: [],
       loadSearchPhotosState: 'error' as const,
       hasLoadSearchPhotosError: action.error,
     })),
     on(pexelsActions.changeSearchQuery, (state, action) => ({
       ...state,
       searchQuery: action.query,
+      nextPage: 1,
     })),
   ),
   extraSelectors: ({ selectLoadSearchPhotosState }) => ({
@@ -64,6 +72,8 @@ export const {
   selectPhotos,
   selectSearchQuery,
   selectPerPage,
+  selectNextPage,
+  selectTheEnd,
   selectIsLoadingSearchPhotos,
   selectLoadSearchPhotosSuccess,
   selectHasLoadSearchPhotosError,

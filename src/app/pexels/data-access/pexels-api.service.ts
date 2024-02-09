@@ -14,9 +14,10 @@ export class PexelsApiService {
   searchPhotos(
     query: string,
     perPage: number,
+    page: number,
   ): Observable<PexelsSearchPhotosData> {
     return this.http.get<PexelsSearchPhotosData>(
-      `${this.url}?query=${query}&per_page${perPage}`,
+      `${this.url}?query=${query}&per_page${perPage}&page=${page}`,
     );
   }
 }

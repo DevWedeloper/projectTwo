@@ -10,8 +10,10 @@ import {
   withLatestFrom,
 } from 'rxjs';
 import { PexelsApiService } from '../data-access/pexels-api.service';
+import { PexelsPhoto } from '../types/pexels.type';
 import { pexelsActions } from './pexels.actions';
 import {
+  selectNextPage,
   selectPerPage,
   selectPhotos,
   selectSearchQuery,
@@ -30,15 +32,18 @@ export class PexelsEffects {
       withLatestFrom(
         this.store.select(selectSearchQuery),
         this.store.select(selectPerPage),
+        this.store.select(selectNextPage),
         this.store.select(selectPhotos),
       ),
-      switchMap(([, query, perPage, previousPhotos]) =>
-        this.pexelsApiService.searchPhotos(query, perPage).pipe(
+      switchMap(([, query, perPage, page, previousPhotos]) =>
+        this.pexelsApiService.searchPhotos(query, perPage, page).pipe(
           map((data) => data.photos),
-          map((photos) => [...(previousPhotos || []), ...photos]),
+          map((photos) =>
+            calculatePhotosAndTheEnd(previousPhotos, photos, perPage),
+          ),
         ),
       ),
-      map((photos) => pexelsActions.loadSearchPhotosSuccess({ photos })),
+      map((data) => pexelsActions.loadSearchPhotosSuccess(data)),
       catchError((error) => of(pexelsActions.loadSearchPhotosFailure(error))),
     ),
   );
@@ -49,15 +54,28 @@ export class PexelsEffects {
       withLatestFrom(
         this.store.select(selectSearchQuery),
         this.store.select(selectPerPage),
+        this.store.select(selectNextPage),
       ),
-      switchMap(([, query, perPage]) =>
-        this.pexelsApiService.searchPhotos(query, perPage).pipe(
+      switchMap(([, query, perPage, page]) =>
+        this.pexelsApiService.searchPhotos(query, perPage, page).pipe(
           map((data) => data.photos),
-          map((photos) => [...[], ...photos]),
+          map((photos) =>
+            calculatePhotosAndTheEnd([], photos, perPage),
+          ),
         ),
       ),
-      map((photos) => pexelsActions.loadSearchPhotosSuccess({ photos })),
+      map((data) => pexelsActions.loadSearchPhotosSuccess(data)),
       catchError((error) => of(pexelsActions.loadSearchPhotosFailure(error))),
     ),
   );
+}
+
+function calculatePhotosAndTheEnd(
+  previousPhotos: PexelsPhoto[],
+  photos: PexelsPhoto[],
+  perPage: number,
+): { photos: PexelsPhoto[]; theEnd: boolean } {
+  const totalPhotos = [...(previousPhotos || []), ...photos];
+  const theEnd = totalPhotos.length === 0 || totalPhotos.length < perPage;
+  return { photos: totalPhotos, theEnd };
 }
