@@ -1,0 +1,35 @@
+<div class="search-bar-container">
+  <mat-form-field class="form-field" subscriptSizing="dynamic">
+    <mat-label>Search keyword</mat-label>
+    <mat-icon matPrefix>search</mat-icon>
+    <input
+      #searchInput
+      matInput
+      type="text"
+      [(ngModel)]="value"
+      (keyup)="searchQuery$.next(searchInput.value)"
+    />
+    @if (value) {
+      <button matSuffix mat-icon-button aria-label="Clear" (click)="value = ''">
+        <mat-icon>close</mat-icon>
+      </button>
+    }
+  </mat-form-field>
+</div>
+@defer {
+  <cdk-virtual-scroll-viewport
+    scrollWindow
+    itemSize="50"
+    (scrolledIndexChange)="getNextBatch()"
+  >
+    <div *cdkVirtualFor="let photo of photos$ | async; trackBy: trackBy">
+      <img [src]="photo.src.tiny" [alt]="photo.alt" loading="lazy" />
+    </div>
+    @if (loading$ | async) {
+      <div>Loading...</div>
+    }
+  </cdk-virtual-scroll-viewport>
+}
+@if (theEnd) {
+  <div>No more data to load...</div>
+}

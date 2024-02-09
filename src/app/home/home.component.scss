@@ -1,0 +1,18 @@
+:host {
+  display: block;
+}
+
+.search-bar-container {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  z-index: 1;
+}
+
+.form-field {
+  width: 100%;
+}
+
+cdk-virtual-scroll-viewport {
+  margin-top: 56px;
+}
