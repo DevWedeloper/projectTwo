@@ -53,11 +53,13 @@ export class HomeComponent {
     this.searchQuery$
       .pipe(debounceTime(300), distinctUntilChanged(), takeUntilDestroyed())
       .subscribe((query) => {
-        this.store.dispatch(
-          pexelsActions.changeSearchQuery({
-            query,
-          }),
-        );
+        if (query.trim() !== '') {
+          this.store.dispatch(
+            pexelsActions.changeSearchQuery({
+              query,
+            }),
+          );
+        }
       });
   }
 
