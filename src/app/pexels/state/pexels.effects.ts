@@ -37,15 +37,15 @@ export class PexelsEffects {
       switchMap(([, query, perPage, page, previousPhotos]) =>
         this.pexelsApiService.searchPhotos(query, perPage, page).pipe(
           map((data) => data.photos),
-          map((photos) => [...(previousPhotos || []), ...photos]),
+          map((photos) => {
+            const totalPhotos = [...(previousPhotos || []), ...photos];
+            const theEnd =
+              totalPhotos.length === 0 || totalPhotos.length < perPage;
+            return { photos: totalPhotos, theEnd };
+          }),
         ),
       ),
-      map((photos) =>
-        pexelsActions.loadSearchPhotosSuccess({
-          photos,
-          theEnd: photos.length === 0,
-        }),
-      ),
+      map((data) => pexelsActions.loadSearchPhotosSuccess(data)),
       catchError((error) => of(pexelsActions.loadSearchPhotosFailure(error))),
     ),
   );
@@ -61,15 +61,15 @@ export class PexelsEffects {
       switchMap(([, query, perPage, page]) =>
         this.pexelsApiService.searchPhotos(query, perPage, page).pipe(
           map((data) => data.photos),
-          map((photos) => [...[], ...photos]),
+          map((photos) => {
+            const totalPhotos = [...[], ...photos];
+            const theEnd =
+              totalPhotos.length === 0 || totalPhotos.length < perPage;
+            return { photos: totalPhotos, theEnd };
+          }),
         ),
       ),
-      map((photos) =>
-        pexelsActions.loadSearchPhotosSuccess({
-          photos,
-          theEnd: photos.length === 0,
-        }),
-      ),
+      map((data) => pexelsActions.loadSearchPhotosSuccess(data)),
       catchError((error) => of(pexelsActions.loadSearchPhotosFailure(error))),
     ),
   );

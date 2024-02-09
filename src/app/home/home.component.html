@@ -28,8 +28,8 @@
     @if (loading$ | async) {
       <div>Loading...</div>
     }
+    @if (theEnd$ | async) {
+      <div>No more data to load...</div>
+    }
   </cdk-virtual-scroll-viewport>
-}
-@if (theEnd$ | async) {
-  <div>No more data to load...</div>
 }
