@@ -10,6 +10,7 @@ import {
   withLatestFrom,
 } from 'rxjs';
 import { PexelsApiService } from '../data-access/pexels-api.service';
+import { PexelsPhoto } from '../types/pexels.type';
 import { pexelsActions } from './pexels.actions';
 import {
   selectNextPage,
@@ -17,7 +18,6 @@ import {
   selectPhotos,
   selectSearchQuery,
 } from './pexels.reducers';
-import { PexelsPhoto } from '../types/pexels.type';
 
 @Injectable()
 export class PexelsEffects {
