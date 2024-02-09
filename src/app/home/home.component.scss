@@ -3,8 +3,8 @@
 }
 
 .search-bar-container {
-  position: sticky;
-  top: 0;
+  position: fixed;
+  inset: 0;
   width: 100%;
   z-index: 1;
 }
@@ -13,6 +13,6 @@
   width: 100%;
 }
 
-.example-item {
-  height: 50px;
+cdk-virtual-scroll-viewport {
+  margin-top: 56px;
 }

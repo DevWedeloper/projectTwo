@@ -3,13 +3,25 @@ import {
   ScrollingModule,
 } from '@angular/cdk/scrolling';
 import { CommonModule } from '@angular/common';
-import { ChangeDetectionStrategy, Component, ViewChild } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  ViewChild,
+  inject,
+} from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
-import { Observable, Subject, map, mergeMap, scan, throttleTime } from 'rxjs';
+import { Store } from '@ngrx/store';
+import { Subject, debounceTime, distinctUntilChanged } from 'rxjs';
+import { pexelsActions } from '../pexels/state/pexels.actions';
+import {
+  selectIsLoadingSearchPhotos,
+  selectPhotos,
+} from '../pexels/state/pexels.reducers';
 
 @Component({
   selector: 'app-home',
@@ -28,60 +40,40 @@ import { Observable, Subject, map, mergeMap, scan, throttleTime } from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HomeComponent {
-  protected value = '';
+  private store = inject(Store);
+  protected photos$ = this.store.select(selectPhotos);
+  protected loading$ = this.store.select(selectIsLoadingSearchPhotos);
+  protected value = 'dog';
   private batchSize = 15;
   protected theEnd = false;
-  private offset = new Subject<void>();
-  protected infinite: Observable<any[]>;
+  protected searchQuery$ = new Subject<string>();
   @ViewChild(CdkVirtualScrollViewport) viewport!: CdkVirtualScrollViewport;
 
   constructor() {
-    const batchMap = this.offset.pipe(
-      throttleTime(500),
-      mergeMap((n) => this.getBatch(n)),
-      scan<{ id: number; name: string }[], { id: number; name: string }[]>(
-        (acc, batch) => {
-          return [...acc, ...batch];
-        },
-        [],
-      ),
-    );
-
-    this.infinite = batchMap.pipe(map((v) => Object.values(v)));
-  }
-
-  getBatch(offset: any) {
-    return new Observable<{ id: number; name: string }[]>((observer) => {
-      setTimeout(() => {
-        const start = offset || 0;
-        const end = start + this.batchSize;
-        const batch = Array.from({ length: this.batchSize }).map((_, i) => ({
-          id: start + i,
-          name: `Item #${start + i}`,
-          query: this.value,
-        }));
-
-        observer.next(batch);
-        if (this.value === 'test') {
-          this.theEnd = true;
-        } else if (end >= 100) {
-          this.theEnd = true;
-        }
-
-        observer.complete();
-      }, 1000);
-    });
+    this.searchQuery$
+      .pipe(debounceTime(300), distinctUntilChanged(), takeUntilDestroyed())
+      .subscribe((query) => {
+        this.store.dispatch(
+          pexelsActions.changeSearchQuery({
+            query,
+          }),
+        );
+      });
   }
 
   getNextBatch() {
-    if (this.theEnd) {
-      return;
-    }
+    // if (this.theEnd) {
+    //   return;
+    // }
 
-    const end = this.viewport.getRenderedRange().end;
-    const total = this.viewport.getDataLength();
-    if (end === total) {
-      this.offset.next();
+    const distanceToBottom = this.viewport.measureScrollOffset('bottom');
+    if (distanceToBottom <= 10) {
+      this.store.dispatch(
+        pexelsActions.loadSearchPhotos({
+          query: this.value,
+          perPage: this.batchSize,
+        }),
+      );
     }
   }
 
