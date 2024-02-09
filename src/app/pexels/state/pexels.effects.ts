@@ -12,6 +12,7 @@ import {
 import { PexelsApiService } from '../data-access/pexels-api.service';
 import { pexelsActions } from './pexels.actions';
 import {
+  selectPage,
   selectPerPage,
   selectPhotos,
   selectSearchQuery,
@@ -30,10 +31,11 @@ export class PexelsEffects {
       withLatestFrom(
         this.store.select(selectSearchQuery),
         this.store.select(selectPerPage),
+        this.store.select(selectPage),
         this.store.select(selectPhotos),
       ),
-      switchMap(([, query, perPage, previousPhotos]) =>
-        this.pexelsApiService.searchPhotos(query, perPage).pipe(
+      switchMap(([, query, perPage, page, previousPhotos]) =>
+        this.pexelsApiService.searchPhotos(query, perPage, page).pipe(
           map((data) => data.photos),
           map((photos) => [...(previousPhotos || []), ...photos]),
         ),
@@ -49,9 +51,10 @@ export class PexelsEffects {
       withLatestFrom(
         this.store.select(selectSearchQuery),
         this.store.select(selectPerPage),
+        this.store.select(selectPage),
       ),
-      switchMap(([, query, perPage]) =>
-        this.pexelsApiService.searchPhotos(query, perPage).pipe(
+      switchMap(([, query, perPage, page]) =>
+        this.pexelsApiService.searchPhotos(query, perPage, page).pipe(
           map((data) => data.photos),
           map((photos) => [...[], ...photos]),
         ),

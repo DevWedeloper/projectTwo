@@ -9,6 +9,7 @@ type PexelsState = {
   hasLoadSearchPhotosError: HttpErrorResponse | null;
   searchQuery: string;
   perPage: number;
+  page: number;
 };
 
 const initialState: PexelsState = {
@@ -17,6 +18,7 @@ const initialState: PexelsState = {
   hasLoadSearchPhotosError: null,
   searchQuery: '',
   perPage: 15,
+  page: 1,
 };
 
 const pexelsFeature = createFeature({
@@ -34,6 +36,7 @@ const pexelsFeature = createFeature({
       photos: action.photos,
       loadSearchPhotosState: 'success' as const,
       hasLoadSearchPhotosError: null,
+      page: state.page + 1,
     })),
     on(pexelsActions.loadSearchPhotosFailure, (state, action) => ({
       ...state,
@@ -44,6 +47,7 @@ const pexelsFeature = createFeature({
     on(pexelsActions.changeSearchQuery, (state, action) => ({
       ...state,
       searchQuery: action.query,
+      page: 1,
     })),
   ),
   extraSelectors: ({ selectLoadSearchPhotosState }) => ({
@@ -64,6 +68,7 @@ export const {
   selectPhotos,
   selectSearchQuery,
   selectPerPage,
+  selectPage,
   selectIsLoadingSearchPhotos,
   selectLoadSearchPhotosSuccess,
   selectHasLoadSearchPhotosError,
