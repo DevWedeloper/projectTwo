@@ -40,7 +40,12 @@ export class PexelsEffects {
           map((photos) => [...(previousPhotos || []), ...photos]),
         ),
       ),
-      map((photos) => pexelsActions.loadSearchPhotosSuccess({ photos })),
+      map((photos) =>
+        pexelsActions.loadSearchPhotosSuccess({
+          photos,
+          theEnd: photos.length === 0,
+        }),
+      ),
       catchError((error) => of(pexelsActions.loadSearchPhotosFailure(error))),
     ),
   );
@@ -59,7 +64,12 @@ export class PexelsEffects {
           map((photos) => [...[], ...photos]),
         ),
       ),
-      map((photos) => pexelsActions.loadSearchPhotosSuccess({ photos })),
+      map((photos) =>
+        pexelsActions.loadSearchPhotosSuccess({
+          photos,
+          theEnd: photos.length === 0,
+        }),
+      ),
       catchError((error) => of(pexelsActions.loadSearchPhotosFailure(error))),
     ),
   );

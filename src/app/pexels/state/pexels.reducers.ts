@@ -10,6 +10,7 @@ type PexelsState = {
   searchQuery: string;
   perPage: number;
   nextPage: number;
+  theEnd: boolean;
 };
 
 const initialState: PexelsState = {
@@ -19,6 +20,7 @@ const initialState: PexelsState = {
   searchQuery: '',
   perPage: 15,
   nextPage: 1,
+  theEnd: false,
 };
 
 const pexelsFeature = createFeature({
@@ -30,6 +32,7 @@ const pexelsFeature = createFeature({
       loadSearchPhotosState: 'loading' as const,
       searchQuery: action.query,
       perPage: action.perPage,
+      theEnd: false,
     })),
     on(pexelsActions.loadSearchPhotosSuccess, (state, action) => ({
       ...state,
@@ -37,6 +40,7 @@ const pexelsFeature = createFeature({
       loadSearchPhotosState: 'success' as const,
       hasLoadSearchPhotosError: null,
       nextPage: state.nextPage + 1,
+      theEnd: action.theEnd,
     })),
     on(pexelsActions.loadSearchPhotosFailure, (state, action) => ({
       ...state,
@@ -69,6 +73,7 @@ export const {
   selectSearchQuery,
   selectPerPage,
   selectNextPage,
+  selectTheEnd,
   selectIsLoadingSearchPhotos,
   selectLoadSearchPhotosSuccess,
   selectHasLoadSearchPhotosError,

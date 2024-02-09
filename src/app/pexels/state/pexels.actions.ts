@@ -7,7 +7,7 @@ export const pexelsActions = createActionGroup({
   events: {
     'Change Search Query': props<{ query: string }>(),
     'Load Search Photos': props<{ query: string; perPage: number }>(),
-    'Load Search Photos Success': props<{ photos: PexelsPhoto[] | null }>(),
+    'Load Search Photos Success': props<{ photos: PexelsPhoto[] | null, theEnd: boolean }>(),
     'Load Search Photos Failure': props<{ error: HttpErrorResponse }>(),
   },
 });

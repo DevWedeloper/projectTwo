@@ -30,6 +30,6 @@
     }
   </cdk-virtual-scroll-viewport>
 }
-@if (theEnd) {
+@if (theEnd$ | async) {
   <div>No more data to load...</div>
 }
