@@ -17,6 +17,7 @@ import {
   selectPhotos,
   selectSearchQuery,
 } from './pexels.reducers';
+import { PexelsPhoto } from '../types/pexels.type';
 
 @Injectable()
 export class PexelsEffects {
@@ -37,12 +38,9 @@ export class PexelsEffects {
       switchMap(([, query, perPage, page, previousPhotos]) =>
         this.pexelsApiService.searchPhotos(query, perPage, page).pipe(
           map((data) => data.photos),
-          map((photos) => {
-            const totalPhotos = [...(previousPhotos || []), ...photos];
-            const theEnd =
-              totalPhotos.length === 0 || totalPhotos.length < perPage;
-            return { photos: totalPhotos, theEnd };
-          }),
+          map((photos) =>
+            calculatePhotosAndTheEnd(previousPhotos || [], photos, perPage),
+          ),
         ),
       ),
       map((data) => pexelsActions.loadSearchPhotosSuccess(data)),
@@ -61,16 +59,23 @@ export class PexelsEffects {
       switchMap(([, query, perPage, page]) =>
         this.pexelsApiService.searchPhotos(query, perPage, page).pipe(
           map((data) => data.photos),
-          map((photos) => {
-            const totalPhotos = [...[], ...photos];
-            const theEnd =
-              totalPhotos.length === 0 || totalPhotos.length < perPage;
-            return { photos: totalPhotos, theEnd };
-          }),
+          map((photos) =>
+            calculatePhotosAndTheEnd([], photos, perPage),
+          ),
         ),
       ),
       map((data) => pexelsActions.loadSearchPhotosSuccess(data)),
       catchError((error) => of(pexelsActions.loadSearchPhotosFailure(error))),
     ),
   );
+}
+
+function calculatePhotosAndTheEnd(
+  previousPhotos: PexelsPhoto[],
+  photos: PexelsPhoto[],
+  perPage: number,
+): { photos: PexelsPhoto[]; theEnd: boolean } {
+  const totalPhotos = [...(previousPhotos || []), ...photos];
+  const theEnd = totalPhotos.length === 0 || totalPhotos.length < perPage;
+  return { photos: totalPhotos, theEnd };
 }
