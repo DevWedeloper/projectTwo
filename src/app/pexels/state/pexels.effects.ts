@@ -39,7 +39,7 @@ export class PexelsEffects {
         this.pexelsApiService.searchPhotos(query, perPage, page).pipe(
           map((data) => data.photos),
           map((photos) =>
-            calculatePhotosAndTheEnd(previousPhotos || [], photos, perPage),
+            calculatePhotosAndTheEnd(previousPhotos, photos, perPage),
           ),
         ),
       ),

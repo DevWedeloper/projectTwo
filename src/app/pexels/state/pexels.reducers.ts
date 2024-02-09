@@ -4,7 +4,7 @@ import { PexelsPhoto } from '../types/pexels.type';
 import { pexelsActions } from './pexels.actions';
 
 type PexelsState = {
-  photos: PexelsPhoto[] | null;
+  photos: PexelsPhoto[];
   loadSearchPhotosState: 'pending' | 'loading' | 'error' | 'success';
   hasLoadSearchPhotosError: HttpErrorResponse | null;
   searchQuery: string;
@@ -14,7 +14,7 @@ type PexelsState = {
 };
 
 const initialState: PexelsState = {
-  photos: null,
+  photos: [],
   loadSearchPhotosState: 'pending',
   hasLoadSearchPhotosError: null,
   searchQuery: '',
@@ -44,7 +44,7 @@ const pexelsFeature = createFeature({
     })),
     on(pexelsActions.loadSearchPhotosFailure, (state, action) => ({
       ...state,
-      photos: null,
+      photos: [],
       loadSearchPhotosState: 'error' as const,
       hasLoadSearchPhotosError: action.error,
     })),
