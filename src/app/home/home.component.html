@@ -26,7 +26,13 @@
       class="photo-container"
       *cdkVirtualFor="let photo of photos$ | async; trackBy: trackBy"
     >
-      <img [src]="photo.src.tiny" [alt]="photo.alt" loading="lazy" />
+      <app-card
+        [photographer]="photo.photographer"
+        [src]="photo.src.tiny"
+        [srcDownload]="photo.src.original"
+        [alt]="photo.alt"
+        [url]="photo.url"
+      />
     </div>
     @if (loading$ | async) {
       <div>Loading...</div>

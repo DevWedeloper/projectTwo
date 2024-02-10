@@ -23,6 +23,7 @@ import {
   selectPhotos,
   selectTheEnd,
 } from '../pexels/state/pexels.reducers';
+import { CardComponent } from '../pexels/ui/card/card.component';
 
 @Component({
   selector: 'app-home',
@@ -35,6 +36,7 @@ import {
     MatButtonModule,
     MatIconModule,
     ScrollingModule,
+    CardComponent,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
