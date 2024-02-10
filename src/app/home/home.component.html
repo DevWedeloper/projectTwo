@@ -22,7 +22,10 @@
     itemSize="50"
     (scrolledIndexChange)="getNextBatch()"
   >
-    <div *cdkVirtualFor="let photo of photos$ | async; trackBy: trackBy">
+    <div
+      class="photo-container"
+      *cdkVirtualFor="let photo of photos$ | async; trackBy: trackBy"
+    >
       <img [src]="photo.src.tiny" [alt]="photo.alt" loading="lazy" />
     </div>
     @if (loading$ | async) {
