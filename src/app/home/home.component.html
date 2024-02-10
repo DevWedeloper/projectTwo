@@ -15,6 +15,21 @@
       </button>
     }
   </mat-form-field>
+  <a
+    class="icon-link"
+    (click)="ts.themeOnClick()"
+    (keydown.Enter)="ts.themeOnClick()"
+    tabindex="0"
+  >
+    <img
+      class="theme-icon theme-icon-menu"
+      src="{{
+        (ts.isDarkMode$ | async)
+          ? 'assets/images/icons/sun.svg'
+          : 'assets/images/icons/moon.svg'
+      }}"
+      [alt]="(ts.isDarkMode$ | async) ? 'Moon Icon' : 'Sun Icon'"
+  /></a>
 </div>
 @defer {
   <cdk-virtual-scroll-viewport

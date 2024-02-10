@@ -24,6 +24,7 @@ import {
   selectTheEnd,
 } from '../pexels/state/pexels.reducers';
 import { CardComponent } from '../pexels/ui/card/card.component';
+import { ThemeService } from '../shared/data-access/theme.service';
 
 @Component({
   selector: 'app-home',
@@ -44,6 +45,7 @@ import { CardComponent } from '../pexels/ui/card/card.component';
 })
 export class HomeComponent {
   private store = inject(Store);
+  protected ts = inject(ThemeService);
   protected photos$ = this.store.select(selectPhotos);
   protected loading$ = this.store.select(selectIsLoadingSearchPhotos);
   protected theEnd$ = this.store.select(selectTheEnd);
