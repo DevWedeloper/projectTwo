@@ -15,6 +15,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { Store } from '@ngrx/store';
 import { Subject, debounceTime, distinctUntilChanged, take } from 'rxjs';
 import { pexelsActions } from '../pexels/state/pexels.actions';
@@ -37,6 +38,7 @@ import { ThemeService } from '../shared/data-access/theme.service';
     MatButtonModule,
     MatIconModule,
     ScrollingModule,
+    MatToolbarModule,
     CardComponent,
   ],
   templateUrl: './home.component.html',
