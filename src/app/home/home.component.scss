@@ -1,12 +1,13 @@
-:host {
-  display: block;
-}
-
 .search-bar-container {
   position: fixed;
   inset: 0;
   width: 100%;
   z-index: 1;
+  height: fit-content;
+  display: flex;
+  align-items: center;
+  padding: 0.25rem;
+  gap: 0.25rem;
 }
 
 .form-field {
@@ -15,4 +16,23 @@
 
 cdk-virtual-scroll-viewport {
   margin-top: 56px;
+}
+
+.photo-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.25rem;
+}
+
+.icon-link {
+  display: flex;
+}
+
+.icon-link:focus-visible {
+  outline: solid 1px white;
+}
+
+img {
+  width: 3rem;
 }

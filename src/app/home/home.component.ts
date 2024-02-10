@@ -15,6 +15,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { Store } from '@ngrx/store';
 import { Subject, debounceTime, distinctUntilChanged, take } from 'rxjs';
 import { pexelsActions } from '../pexels/state/pexels.actions';
@@ -23,6 +24,8 @@ import {
   selectPhotos,
   selectTheEnd,
 } from '../pexels/state/pexels.reducers';
+import { CardComponent } from '../pexels/ui/card/card.component';
+import { ThemeService } from '../shared/data-access/theme.service';
 
 @Component({
   selector: 'app-home',
@@ -35,6 +38,8 @@ import {
     MatButtonModule,
     MatIconModule,
     ScrollingModule,
+    MatToolbarModule,
+    CardComponent,
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
@@ -42,6 +47,7 @@ import {
 })
 export class HomeComponent {
   private store = inject(Store);
+  protected ts = inject(ThemeService);
   protected photos$ = this.store.select(selectPhotos);
   protected loading$ = this.store.select(selectIsLoadingSearchPhotos);
   protected theEnd$ = this.store.select(selectTheEnd);
