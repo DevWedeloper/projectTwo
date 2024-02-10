@@ -33,6 +33,10 @@ cdk-virtual-scroll-viewport {
   display: flex;
 }
 
+.icon-link:focus-visible {
+  outline: solid 1px white;
+}
+
 img {
   width: 3rem;
 }
