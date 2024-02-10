@@ -35,10 +35,10 @@
       />
     </div>
     @if (loading$ | async) {
-      <div>Loading...</div>
+      <div class="photo-container">Loading...</div>
     }
     @if (theEnd$ | async) {
-      <div>No more data to load...</div>
+      <div class="photo-container">No more data to load...</div>
     }
   </cdk-virtual-scroll-viewport>
 }
