@@ -11,21 +11,12 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { provideStore } from '@ngrx/store';
 import { provideStoreDevtools } from '@ngrx/store-devtools';
 import { routes } from './app.routes';
-import { pexelsInterceptor } from './pexels/pexels.interceptor';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideRouter(routes),
-    provideHttpClient(withFetch(), withInterceptors([pexelsInterceptor])),
+    provideHttpClient(withFetch()),
     provideClientHydration(),
     provideAnimationsAsync(),
-    provideStore(),
-    provideStoreDevtools({
-      maxAge: 25,
-      logOnly: !isDevMode(),
-      autoPause: true,
-      trace: false,
-      traceLimit: 75,
-    }),
   ],
 };
