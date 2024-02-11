@@ -42,10 +42,17 @@ body {
   font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
+@mixin apply-theme-colors($theme, $component) {
+  @include mat.all-component-colors($theme);
+  .#{$component} {
+    background-color: mat.get-theme-color($theme, $component);
+  }
+}
+
 .dark-theme {
-  @include mat.all-component-colors($dark-theme);
+  @include apply-theme-colors($dark-theme, "primary");
 }
 
 .light-theme {
-  @include mat.all-component-colors($light-theme);
+  @include apply-theme-colors($light-theme, "primary");
 }
