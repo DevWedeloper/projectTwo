@@ -31,3 +31,29 @@
       [alt]="(ts.isDarkMode$ | async) ? 'Moon Icon' : 'Sun Icon'"
   /></a>
 </mat-toolbar>
+@defer {
+  <cdk-virtual-scroll-viewport
+    scrollWindow
+    itemSize="50"
+    (scrolledIndexChange)="getNextBatch()"
+  >
+    <div
+      class="photo-container"
+      *cdkVirtualFor="let photo of photos$ | async; trackBy: trackBy"
+    >
+      <app-card
+        [photographer]="photo.photographer"
+        [src]="photo.src.tiny"
+        [srcDownload]="photo.src.original"
+        [alt]="photo.alt"
+        [url]="photo.url"
+      />
+    </div>
+    @if (loading$ | async) {
+      <div class="photo-container">Loading...</div>
+    }
+    @if (theEnd$ | async) {
+      <div class="photo-container">No more data to load...</div>
+    }
+  </cdk-virtual-scroll-viewport>
+}
