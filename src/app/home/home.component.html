@@ -1,4 +1,4 @@
-<mat-toolbar class="search-bar-container" color="primary">
+<div class="search-bar-container primary">
   <mat-form-field class="form-field" subscriptSizing="dynamic">
     <mat-label>Search keyword</mat-label>
     <mat-icon matPrefix>search</mat-icon>
@@ -30,7 +30,7 @@
       }}"
       [alt]="(ts.isDarkMode$ | async) ? 'Moon Icon' : 'Sun Icon'"
   /></a>
-</mat-toolbar>
+</div>
 @defer {
   <cdk-virtual-scroll-viewport
     scrollWindow
