@@ -1,6 +1,8 @@
 /* You can add global styles to this file, and also import other style files */
 @use "@angular/material" as mat;
 
+mat.$theme-ignore-duplication-warnings: true;
+
 @include mat.core();
 
 $dark-theme: mat.define-dark-theme(
@@ -55,4 +57,8 @@ body {
 
 .light-theme {
   @include apply-theme-colors($light-theme, "primary");
+}
+
+@media (prefers-color-scheme: dark) {
+  @include apply-theme-colors($dark-theme, "primary");
 }
