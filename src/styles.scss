@@ -35,8 +35,8 @@ $light-theme: mat.define-light-theme(
   box-sizing: border-box;
 }
 
-$theme-icon-dark: url("assets/images/icons/sun.svg");
-$theme-icon-light: url("assets/images/icons/moon.svg");
+$theme-icon-dark: url("assets/images/icons/moon.svg");
+$theme-icon-light: url("assets/images/icons/sun.svg");
 
 :root {
   --theme-icon: $theme-icon-light;
