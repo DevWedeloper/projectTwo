@@ -33,6 +33,10 @@ cdk-virtual-scroll-viewport {
   outline: solid 1px white;
 }
 
-img {
+.theme-icon {
   width: 3rem;
+  height: 3rem;
+  background-image: var(--theme-icon);
+  background-size: contain;
+  background-position: center;
 }
