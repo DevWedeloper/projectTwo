@@ -1,8 +1,6 @@
 /* You can add global styles to this file, and also import other style files */
 @use "@angular/material" as mat;
 
-mat.$theme-ignore-duplication-warnings: true;
-
 @include mat.core();
 
 $dark-theme: mat.define-dark-theme(
@@ -22,6 +20,8 @@ $light-theme: mat.define-light-theme(
       primary: mat.define-palette(mat.$indigo-palette),
       accent: mat.define-palette(mat.$pink-palette),
     ),
+    typography: mat.define-typography-config(),
+    density: 0,
   )
 );
 
@@ -33,6 +33,21 @@ $light-theme: mat.define-light-theme(
   border: none;
   outline: none;
   box-sizing: border-box;
+}
+
+$theme-icon-dark: url("assets/images/icons/sun.svg");
+$theme-icon-light: url("assets/images/icons/moon.svg");
+
+:root {
+  --theme-icon: $theme-icon-light;
+}
+
+@mixin apply-theme-icon($theme) {
+  @if $theme == "dark" {
+    --theme-icon: #{$theme-icon-dark};
+  } @else {
+    --theme-icon: #{$theme-icon-light};
+  }
 }
 
 body::-webkit-scrollbar {
@@ -70,12 +85,10 @@ body {
 
 .dark-theme {
   @include apply-theme-colors($dark-theme, "primary");
+  @include apply-theme-icon("light");
 }
 
 .light-theme {
   @include apply-theme-colors($light-theme, "primary");
-}
-
-@media (prefers-color-scheme: dark) {
-  @include apply-theme-colors($dark-theme, "primary");
+  @include apply-theme-icon("dark");
 }

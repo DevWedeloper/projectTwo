@@ -30,9 +30,9 @@ export class ThemeService {
     this.darkMode$.next(!this.darkMode$.value);
     const preferredTheme = this.darkMode$.value ? 'dark' : 'light';
 
-    this.renderer.removeClass(document.body, 'dark-theme');
-    this.renderer.removeClass(document.body, 'light-theme');
-    this.renderer.addClass(document.body, `${preferredTheme}-theme`);
+    this.renderer.removeClass(document.documentElement, 'dark-theme');
+    this.renderer.removeClass(document.documentElement, 'light-theme');
+    this.renderer.addClass(document.documentElement, `${preferredTheme}-theme`);
 
     localStorage.setItem('preferredTheme', preferredTheme);
   }
@@ -42,11 +42,6 @@ export class ThemeService {
     const isDarkTheme =
       preferredTheme === 'dark' ||
       (preferredTheme === null && this.darkThemeMediaQuery.matches);
-
     this.darkMode$.next(isDarkTheme);
-    this.renderer.addClass(
-      document.body,
-      isDarkTheme ? 'dark-theme' : 'light-theme',
-    );
   }
 }
