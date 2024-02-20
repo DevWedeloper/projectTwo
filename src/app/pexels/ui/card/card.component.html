@@ -3,10 +3,11 @@
   <div class="overlay-content">
     <p>{{ photographer() }}</p>
     <div class="icon-container">
-      <a
+      <span
         tabindex="0"
         (click)="downloadImage()"
         (keydown.Enter)="downloadImage()"
+        class="link"
       >
         <span>
           <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 -960 960 960">
@@ -16,7 +17,7 @@
             />
           </svg>
         </span>
-      </a>
+      </span>
       <a [href]="url()" target="_blank">
         <span>
           <svg
