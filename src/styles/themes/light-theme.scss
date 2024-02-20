@@ -1,0 +1,19 @@
+
+@use "@angular/material" as mat;
+@use "../utils.scss";
+
+$light-theme: mat.define-light-theme(
+  (
+    color: (
+      primary: mat.define-palette(mat.$indigo-palette),
+      accent: mat.define-palette(mat.$pink-palette),
+    ),
+    typography: mat.define-typography-config(),
+    density: 0,
+  )
+);
+
+.light-theme {
+  @include utils.apply-theme-colors($light-theme, "primary");
+  @include utils.apply-theme-icon("dark");
+}
