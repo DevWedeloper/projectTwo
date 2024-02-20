@@ -1,0 +1,19 @@
+@use "@angular/material" as mat;
+
+@mixin apply-theme-colors($theme, $component) {
+  @include mat.all-component-colors($theme);
+  .#{$component} {
+    background-color: mat.get-theme-color($theme, $component);
+  }
+}
+
+$theme-icon-dark: url("/assets/images/icons/moon.svg");
+$theme-icon-light: url("/assets/images/icons/sun.svg");
+
+@mixin apply-theme-icon($theme) {
+  @if $theme == "dark" {
+    --theme-icon: #{$theme-icon-dark};
+  } @else {
+    --theme-icon: #{$theme-icon-light};
+  }
+}

@@ -1,29 +1,9 @@
 /* You can add global styles to this file, and also import other style files */
 @use "@angular/material" as mat;
+@use "../src/styles/themes/light-theme.scss";
+@use "../src/styles/themes/dark-theme.scss";
 
 @include mat.core();
-
-$dark-theme: mat.define-dark-theme(
-  (
-    color: (
-      primary: mat.define-palette(mat.$pink-palette),
-      accent: mat.define-palette(mat.$blue-grey-palette),
-    ),
-    typography: mat.define-typography-config(),
-    density: 0,
-  )
-);
-
-$light-theme: mat.define-light-theme(
-  (
-    color: (
-      primary: mat.define-palette(mat.$indigo-palette),
-      accent: mat.define-palette(mat.$pink-palette),
-    ),
-    typography: mat.define-typography-config(),
-    density: 0,
-  )
-);
 
 *,
 *::before,
@@ -33,21 +13,6 @@ $light-theme: mat.define-light-theme(
   border: none;
   outline: none;
   box-sizing: border-box;
-}
-
-$theme-icon-dark: url("assets/images/icons/moon.svg");
-$theme-icon-light: url("assets/images/icons/sun.svg");
-
-:root {
-  --theme-icon: $theme-icon-light;
-}
-
-@mixin apply-theme-icon($theme) {
-  @if $theme == "dark" {
-    --theme-icon: #{$theme-icon-dark};
-  } @else {
-    --theme-icon: #{$theme-icon-light};
-  }
 }
 
 body::-webkit-scrollbar {
@@ -74,21 +39,4 @@ body {
 body {
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
-}
-
-@mixin apply-theme-colors($theme, $component) {
-  @include mat.all-component-colors($theme);
-  .#{$component} {
-    background-color: mat.get-theme-color($theme, $component);
-  }
-}
-
-.dark-theme {
-  @include apply-theme-colors($dark-theme, "primary");
-  @include apply-theme-icon("light");
-}
-
-.light-theme {
-  @include apply-theme-colors($light-theme, "primary");
-  @include apply-theme-icon("dark");
 }
