@@ -1,7 +1,9 @@
 @use "@angular/material" as mat;
 
 @mixin apply-theme-colors($theme, $component) {
-  @include mat.all-component-colors($theme);
+  @include mat.core-color($theme);
+  @include mat.form-field-color($theme);
+
   .#{$component} {
     background-color: mat.get-theme-color($theme, $component);
   }
