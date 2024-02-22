@@ -6,8 +6,8 @@ import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
-  ViewChild,
   inject,
+  viewChild
 } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
@@ -52,7 +52,7 @@ export class HomeComponent {
   protected value = 'dog';
   private batchSize = 15;
   protected searchQuery$ = new Subject<string>();
-  @ViewChild(CdkVirtualScrollViewport) viewport!: CdkVirtualScrollViewport;
+  private viewport = viewChild.required(CdkVirtualScrollViewport);
 
   constructor() {
     this.searchQuery$
@@ -71,7 +71,7 @@ export class HomeComponent {
   getNextBatch() {
     this.theEnd$.pipe(take(1)).subscribe((theEnd) => {
       if (!theEnd) {
-        const distanceToBottom = this.viewport.measureScrollOffset('bottom');
+        const distanceToBottom = this.viewport().measureScrollOffset('bottom');
         if (distanceToBottom <= 10) {
           this.store.dispatch(
             pexelsActions.loadSearchPhotos({
