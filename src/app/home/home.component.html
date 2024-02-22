@@ -28,18 +28,17 @@
     itemSize="50"
     (scrolledIndexChange)="getNextBatch()"
   >
-    <div
-      class="photo-container"
-      *cdkVirtualFor="let photo of photos$ | async; trackBy: trackBy"
-    >
-      <app-card
-        [photographer]="photo.photographer"
-        [src]="photo.src.tiny"
-        [srcDownload]="photo.src.original"
-        [alt]="photo.alt"
-        [url]="photo.url"
-      />
-    </div>
+    @for (photo of photos$ | async; track $index) {
+      <div class="photo-container">
+        <app-card
+          [photographer]="photo.photographer"
+          [src]="photo.src.tiny"
+          [srcDownload]="photo.src.original"
+          [alt]="photo.alt"
+          [url]="photo.url"
+        />
+      </div>
+    }
     @if (loading$ | async) {
       <div class="photo-container">Loading...</div>
     }
