@@ -6,6 +6,7 @@ import {
   Renderer2,
   inject,
   input,
+  signal,
 } from '@angular/core';
 import { take } from 'rxjs';
 
@@ -25,6 +26,7 @@ export class CardComponent {
   srcDownload = input.required<string>();
   alt = input.required<string>();
   url = input.required<string>();
+  protected loaded = signal<boolean>(false);
 
   protected downloadImage(): void {
     const imageUrl = this.srcDownload();
