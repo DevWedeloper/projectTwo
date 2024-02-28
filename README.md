@@ -1,4 +1,6 @@
-# ProjectTwo: An infinite scroll that uses Pexels API.
+# ProjectTwo
+
+An infinite scroll that uses Pexels API.
 
 ## Additional Features
 
